@@ -1,4 +1,4 @@
-import { sagas as counterSagas } from "common/counter/redux";
+import { sagas as counterSagas } from "modules/counter/redux";
 import createSagaMiddleware, { effects } from "redux-saga";
 
 export const sagaMiddleware = createSagaMiddleware();

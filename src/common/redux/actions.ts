@@ -1,4 +1,4 @@
-import { CounterAction} from "common/counter/redux";
+import { CounterAction} from "modules/counter/redux";
 
 export type RootAction =
     | CounterAction;

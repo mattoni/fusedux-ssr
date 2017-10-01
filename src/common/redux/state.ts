@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { counterReducer as counter, CounterState } from "common/counter/redux";
+import { counterReducer as counter, CounterState } from "modules/counter/redux";
 import { routerReducer as router, RouterState} from "common/router";
 
 export interface RootState {
