@@ -31,6 +31,7 @@
     "csx": "^8.5.0",
     "hapi": "^16.6.2",
     "inert": "^4.2.1",
+    "isomorphic-fetch": "^2.2.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
