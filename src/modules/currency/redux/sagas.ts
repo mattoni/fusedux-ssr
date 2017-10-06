@@ -1,6 +1,6 @@
 import { effects } from "redux-saga";
 import { currencyActionCreators, Currency } from "./actions";
-const { put, takeEvery, } = effects;
+const { put, takeEvery, call } = effects;
 
 export interface FetchCurrencyResp {
     base: Currency;
@@ -9,9 +9,16 @@ export interface FetchCurrencyResp {
 }
 
 function* fetchCurrency() {
-    const resp = yield fetch("http://api.fixer.io/latest?base=USD&symbols=JPY");
-    console.log("Fetch resp", resp);
+    console.log("fetching");
+    const resp = yield call(fetchCurrencyFromApi)
+    console.log(resp);
     yield put(currencyActionCreators.SetCurrency.create(1));
+}
+
+async function fetchCurrencyFromApi() {
+    const resp = await fetch("http://api.fixer.io/latest?base=USD&symbols=JPY");
+    if (!resp.ok) { console.error("failed to fetch currency") }
+    return await resp.json();
 }
 
 export function* watchFetchCurrency() {
