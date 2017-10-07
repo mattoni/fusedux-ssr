@@ -2,9 +2,11 @@ import * as React from "react";
 import { SFC } from "react";
 import { getStyles } from "typestyle/lib";
 import { initPageStyles } from "common/styles";
+import { RootState, PRELOADED_STATE } from "common/redux";
 
 interface HtmlProps {
     bundles: string[];
+    state: RootState;
 }
 
 export const Html: SFC<HtmlProps> = (props) => {
@@ -31,6 +33,7 @@ export const Html: SFC<HtmlProps> = (props) => {
                     {props.children}
                 </div>
             </body>
+            <script dangerouslySetInnerHTML={{ __html: `window.${PRELOADED_STATE}=${JSON.stringify(props.state)}` }} />
             {props.bundles.map(b => (
                 <script key={b} src={b} />
             ))}

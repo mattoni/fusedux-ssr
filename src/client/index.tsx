@@ -1,16 +1,18 @@
 import * as React from "react";
-import { render } from "react-dom";
+import { hydrate } from "react-dom";
 import { Provider } from "react-redux";
 import { AppView } from "modules/app/views";
-import { store, runSagas } from "common/redux";
+import { initStore, runSagas, PRELOADED_STATE } from "common/redux";
 import { ConnectedRouter } from "react-router-redux";
 import { history } from "common/router";
 import { initPageStyles } from "common/styles";
 import { setStylesTarget, forceRenderStyles } from "typestyle";
 
 async function initialize() {
-    runSagas();
     initPageStyles();
+    const store = initStore(window[PRELOADED_STATE]);
+    delete window[PRELOADED_STATE];
+    runSagas();
 
     const app = (
         <Provider store={store}>
@@ -25,7 +27,7 @@ async function initialize() {
         throw new Error("Unable to render styles: missing target");
     }
 
-    render(app, document.getElementById("root"));
+    hydrate(app, document.getElementById("root"));
     setStylesTarget(styleDiv);
     forceRenderStyles();
 }

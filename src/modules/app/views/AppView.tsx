@@ -5,6 +5,7 @@ import { style } from "typestyle";
 
 import CounterView from "../../counter/views";
 import { Colors } from "common/styles";
+import { links } from "common/router";
 
 interface AppProps {
 
@@ -25,9 +26,9 @@ const Styles = {
         backgroundColor: `${Colors.darkGray}`,
         $nest: {
             "& > div": {
-                transition: "background .2s ease-in-out",            
-                height: "100%",     
-                padding: "1rem",                
+                transition: "background .2s ease-in-out",
+                height: "100%",
+                padding: "1rem",
             },
             "& > div:hover": {
                 cursor: "pointer",
@@ -41,7 +42,7 @@ export const AppView: SFC<AppProps> = () => (
     <div>
         <Header />
         <main className={Styles.wrapper} role="stage">
-            <Route exact path="/" component={CounterView} />
+            <Route exact path={links.counter()} component={CounterView} />
         </main>
     </div>
 );

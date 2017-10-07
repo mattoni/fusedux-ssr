@@ -4,12 +4,10 @@ import * as React from "react";
 import { renderToString } from "react-dom/server";
 import { AppView } from "modules/app/views";
 import { Html } from "./components";
-import { store, sagaMiddleware } from "common/redux";
-import { Provider } from "react-redux";
+import { initStore, sagaMiddleware, rootSaga, RootState } from "common/redux";
+import { Provider, Store } from "react-redux";
 import { routes } from "common/router";
-
 import { END } from "redux-saga";
-import { currencyActionCreators, sagas } from "modules/currency/redux";
 
 interface StaticContext {
     url?: string;
@@ -17,7 +15,8 @@ interface StaticContext {
 
 export const handleAppRequest = (req: Hapi.Request, reply: Hapi.ReplyNoContinue) => {
     const context: StaticContext = {};
-    console.log("serving", req.path)
+    const store = initStore()
+    console.log("serving", req.path);
     const app = (
         <Provider store={store}>
             <StaticRouter
@@ -33,28 +32,37 @@ export const handleAppRequest = (req: Hapi.Request, reply: Hapi.ReplyNoContinue)
         return;
     }
 
-    const r = async () => {
-        const runningSagas = sagaMiddleware.run(sagas.watchFetchCurrency).done;
-        const f = currencyActionCreators.FetchCurrency.create("JPY");
-        store.dispatch(f);
+    const respond = async () => {
+        const runningSagas = sagaMiddleware.run(rootSaga).done;
+        await execRoutes(req.path, store);
         store.dispatch(END);
+
         await Promise.all([
             runningSagas,
-            execRoutes(req.path)
         ]);
 
-        reply(`<!doctype html>${renderToString(<Html bundles={["/js/vendor.js", "/js/client.js"]}>{app}</Html>)}`);
+
+        reply(`
+            <!doctype html>
+                ${renderToString(
+                <Html
+                    state={store.getState()}
+                    bundles={["/js/vendor.js", "/js/client.js"]}>
+                    {app}
+                </Html>)
+            }
+        `);
     }
 
-    r();
+    respond();
 }
 
-async function execRoutes(path: string) {
+async function execRoutes(path: string, store: Store<RootState>) {
     let promise;
     routes.some(r => {
         const match = matchPath(path, r);
         if (match && r.onEnter) {
-            promise = r.onEnter();
+            promise = r.onEnter(store);
         }
         return match !== null;
     });
