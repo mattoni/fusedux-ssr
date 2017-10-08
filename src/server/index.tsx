@@ -1,4 +1,5 @@
 import * as Hapi from "hapi";
+import * as Chalk from "chalk";
 import "isomorphic-fetch";
 import { handleAppRequest } from "./request";
 import * as inert from "inert";
@@ -29,7 +30,11 @@ const start = async () => {
 
     const err = await server.start();
     if (err) { throw err; }
-    console.log(`Server running at: ${server.info!.uri}`);
+    console.log(
+        Chalk.black.bgYellow(
+            `\n\n👻  Server running at: ${server.info!.uri}`,
+        ),
+    );
 }
 
 try {

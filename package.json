@@ -6,7 +6,16 @@
   "scripts": {
     "start": "ts-node fuse"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write --parser typescript --tab-width 4 --trailing-comma all --jsx-bracket-same-line",
+      "git add"
+    ]
+  },
   "devDependencies": {
+    "@types/chalk": "^0.4.31",
+    "@types/inert": "^4.2.3",
+    "@types/react-router-dom": "^4.0.8",
     "@types/hapi": "^16.1.10",
     "@types/react": "^16.0.5",
     "@types/react-dom": "^16.0.0",
@@ -26,8 +35,7 @@
     "typescript": "^2.5.2"
   },
   "dependencies": {
-    "@types/inert": "^4.2.3",
-    "@types/react-router-dom": "^4.0.8",
+    "chalk": "^2.1.0",
     "csstips": "^0.2.2",
     "csx": "^8.5.0",
     "hapi": "^16.6.2",
