@@ -6,4 +6,5 @@ export const Colors = {
     mainRed: rgba(206, 0, 0, 1),
     white: rgba(255, 255, 255, 1),
     text: rgba(255, 255, 255, 0.8),
+    green: rgba(0, 200, 0, 1),
 }

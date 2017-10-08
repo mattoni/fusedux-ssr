@@ -17,7 +17,7 @@ async function initialize() {
     const app = (
         <Provider store={store}>
             <ConnectedRouter history={history}>
-                <AppView />
+                <AppView store={store} />
             </ConnectedRouter>
         </Provider>
     );

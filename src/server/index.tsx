@@ -2,10 +2,12 @@ import * as Hapi from "hapi";
 import "isomorphic-fetch";
 import { handleAppRequest } from "./request";
 import * as inert from "inert";
+import { initPageStyles } from "common/styles";
 
 const start = async () => {
     const server = new Hapi.Server();
     await server.register(inert);
+
     server.connection({ port: 3000, host: '127.0.0.1' });
     server.route({
         method: '*',
@@ -22,6 +24,8 @@ const start = async () => {
             }
         }
     })
+
+    initPageStyles();
 
     const err = await server.start();
     if (err) { throw err; }

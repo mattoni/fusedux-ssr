@@ -1,7 +1,6 @@
 import * as React from "react";
 import { SFC } from "react";
 import { getStyles } from "typestyle/lib";
-import { initPageStyles } from "common/styles";
 import { RootState, PRELOADED_STATE } from "common/redux";
 
 interface HtmlProps {
@@ -9,8 +8,8 @@ interface HtmlProps {
     state: RootState;
 }
 
+
 export const Html: SFC<HtmlProps> = (props) => {
-    initPageStyles();
     return (
         <html>
             <head>

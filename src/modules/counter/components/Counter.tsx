@@ -12,10 +12,9 @@ interface CounterProps {
 
 const Styles = {
     wrapper: style({
-        gridColumn: "2",
+        gridColumn: "1/3",
         display: "flex",
         alignItems: "center",
-        width: "50rem",
         flexDirection: "column",
         $nest: {
             "& button": {

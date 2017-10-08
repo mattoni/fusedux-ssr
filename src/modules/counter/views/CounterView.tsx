@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { RootState } from "common/redux";
-import { counterActionCreators } from "../redux";
+import { counterActions } from "../redux";
 import { Counter } from "../components";
 
 const mapStateToProps = (state: RootState) => {
@@ -12,8 +12,8 @@ const mapStateToProps = (state: RootState) => {
 export const CounterView = connect(
     mapStateToProps,
     {
-        onIncrement: counterActionCreators.IncreaseCounter.create,
-        onDecrement: counterActionCreators.DecreaseCounter.create ,
-        onIncrementAsync: counterActionCreators.IncreaseCounterAsync.create,       
+        onIncrement: counterActions.IncreaseCounter.create,
+        onDecrement: counterActions.DecreaseCounter.create,
+        onIncrementAsync: counterActions.IncreaseCounterAsync.create,
     }
 )(Counter);

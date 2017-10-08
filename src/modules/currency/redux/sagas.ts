@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { currencyActionCreators, Currency } from "./actions";
+import { currencyActions, Currency, CurrencyAction } from "./actions";
 const { put, takeEvery, call } = effects;
 
 export interface FetchCurrencyResp {
@@ -8,22 +8,29 @@ export interface FetchCurrencyResp {
     rates: { [key: string]: number };
 }
 
-function* fetchCurrency() {
-    console.log("fetching");
-    const resp = yield call(fetchCurrencyFromApi)
+function* fetchCurrency(action: CurrencyAction) {
+    if (action.type !== currencyActions.FetchCurrency.type) {
+        return;
+    }
+
+    const resp: FetchCurrencyResp = yield call(() => fetchCurrencyFromApi(action.payload))
     console.log(resp);
-    yield put(currencyActionCreators.SetCurrency.create(1));
+
+    yield put(currencyActions.SetCurrency.create({
+        value: resp.rates[action.payload],
+        type: action.payload
+    }));
 }
 
-async function fetchCurrencyFromApi() {
-    const resp = await fetch("http://api.fixer.io/latest?base=USD&symbols=JPY");
+async function fetchCurrencyFromApi(type: Currency, base: Currency = "USD") {
+    const resp = await fetch(`http://api.fixer.io/latest?base=${base}&symbols=${type}`);
     if (!resp.ok) { console.error("failed to fetch currency") }
     return await resp.json();
 }
 
 export function* watchFetchCurrency() {
     yield takeEvery(
-        currencyActionCreators.FetchCurrency.type,
+        currencyActions.FetchCurrency.type,
         fetchCurrency
     );
 }

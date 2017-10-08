@@ -1,14 +1,15 @@
 import * as React from "react";
 import { SFC } from "react";
-import { Route } from "react-router";
+import { Route, Switch } from "react-router";
+import { Link } from "react-router-dom";
 import { style } from "typestyle";
-
-import CounterView from "../../counter/views";
 import { Colors } from "common/styles";
-import { links } from "common/router";
+import { links, routes } from "common/router";
+import { Store } from "react-redux";
+import { RootState } from "common/redux";
 
 interface AppProps {
-
+    store: Store<RootState>
 }
 
 const Styles = {
@@ -18,19 +19,17 @@ const Styles = {
         gridTemplateRows: "auto",
     }),
     header: style({
-        gridArea: "1 / span 3",
-        display: "grid",
-        justifyItems: "center",
-        gridGap: "10px",
-        gridTemplateColumns: "repeat(auto-fill, minmax(200px,1fr))",
+        display: "flex",
         backgroundColor: `${Colors.darkGray}`,
+    }),
+    link: style({
+        transition: "background .2s ease-in-out",
+        height: "100%",
+        padding: "1rem",
+        color: `${Colors.white}`,
+        textDecoration: "none",
         $nest: {
-            "& > div": {
-                transition: "background .2s ease-in-out",
-                height: "100%",
-                padding: "1rem",
-            },
-            "& > div:hover": {
+            "&:hover": {
                 cursor: "pointer",
                 backgroundColor: `${Colors.darkRed}`,
             }
@@ -38,18 +37,31 @@ const Styles = {
     })
 }
 
-export const AppView: SFC<AppProps> = () => (
+export const AppView: SFC<AppProps> = (props: AppProps) => (
     <div>
         <Header />
         <main className={Styles.wrapper} role="stage">
-            <Route exact path={links.counter()} component={CounterView} />
+            <Switch>
+                {routes.map(route => (
+                    <Route
+                        key={route.path}
+                        // tslint:disable-next-line:jsx-no-lambda
+                        render={() => {
+                            if (route.onEnter) {
+                                route.onEnter(props.store);
+                            }
+                            return <route.component />;
+                        }}
+                        path={route.path} />
+                ))}
+            </Switch>
         </main>
     </div>
 );
 
 export const Header: SFC = () => (
     <header className={Styles.header}>
-        <div>Cool Thing 1</div>
-        <div>Cool Thing 2</div>
+        <Link className={Styles.link} to={links.counter()}>Counter</Link>
+        <Link className={Styles.link} to={links.currency()}>Currency</Link>
     </header>
 );

@@ -3,6 +3,7 @@ import { Store } from "react-redux";
 import { RootState } from "common/redux"
 
 import { counterRoute } from "modules/counter/routes";
+import { currencyRoute } from "modules/currency/routes";
 
 export interface StaticRoute {
     path: string;
@@ -11,5 +12,6 @@ export interface StaticRoute {
 }
 
 export const routes = [
-    counterRoute
+    counterRoute,
+    currencyRoute,
 ]

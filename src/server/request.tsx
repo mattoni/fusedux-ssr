@@ -22,7 +22,7 @@ export const handleAppRequest = (req: Hapi.Request, reply: Hapi.ReplyNoContinue)
             <StaticRouter
                 location={req.path}
                 context={context}>
-                <AppView />
+                <AppView store={store} />
             </StaticRouter>
         </Provider>
     );
