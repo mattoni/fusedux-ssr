@@ -1,12 +1,12 @@
 import * as React from "react";
 import { SFC } from "react";
-import { Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
 import { style } from "typestyle";
 import { Colors } from "common/styles";
 import { links, routes } from "common/router";
 import { Store } from "react-redux";
 import { RootState } from "common/redux";
+import { RouteRenderer } from "common/router/components/RouteRenderer";
 
 interface AppProps {
     store: Store<RootState>
@@ -37,30 +37,24 @@ const Styles = {
     })
 }
 
+
 export const AppView: SFC<AppProps> = (props: AppProps) => (
     <div>
         <Header />
         <main className={Styles.wrapper} role="stage">
-            <Switch>
-                {routes.map(route => (
-                    <Route
-                        key={route.path}
-                        // tslint:disable-next-line:jsx-no-lambda
-                        render={() => {
-                            if (route.onEnter) {
-                                route.onEnter(props.store);
-                            }
-                            return <route.component />;
-                        }}
-                        path={route.path} />
-                ))}
-            </Switch>
+            {routes.map(route => (
+                <RouteRenderer
+                    key={route.path}
+                    route={route}
+                    store={props.store} />
+            ))}
         </main>
     </div>
 );
 
 export const Header: SFC = () => (
     <header className={Styles.header}>
+        <Link className={Styles.link} to={links.home()}>Home</Link>
         <Link className={Styles.link} to={links.counter()}>Counter</Link>
         <Link className={Styles.link} to={links.currency()}>Currency</Link>
     </header>

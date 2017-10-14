@@ -16,16 +16,6 @@ interface StaticContext {
 export const handleAppRequest = (req: Hapi.Request, reply: Hapi.ReplyNoContinue) => {
     const context: StaticContext = {};
     const store = initStore()
-    console.log("serving", req.path);
-    const app = (
-        <Provider store={store}>
-            <StaticRouter
-                location={req.path}
-                context={context}>
-                <AppView store={store} />
-            </StaticRouter>
-        </Provider>
-    );
 
     if (context.url) {
         reply.redirect(context.url);
@@ -41,15 +31,23 @@ export const handleAppRequest = (req: Hapi.Request, reply: Hapi.ReplyNoContinue)
             runningSagas,
         ]);
 
+        const app = renderToString(
+            <Provider store={store}>
+                <StaticRouter
+                    location={req.path}
+                    context={context}>
+                    <AppView store={store} />
+                </StaticRouter>
+            </Provider>
+        );
 
         reply(`
             <!doctype html>
                 ${renderToString(
                 <Html
+                    appString={app}
                     state={store.getState()}
-                    bundles={["/js/vendor.js", "/js/client.js"]}>
-                    {app}
-                </Html>)
+                    bundles={["/js/vendor.js", "/js/client.js"]} />)
             }
         `);
     }

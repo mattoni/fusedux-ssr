@@ -7,6 +7,7 @@ import { ConnectedRouter } from "react-router-redux";
 import { history } from "common/router";
 import { initPageStyles } from "common/styles";
 import { setStylesTarget, forceRenderStyles } from "typestyle";
+import { appACs } from "modules/app/redux";
 
 async function initialize() {
     initPageStyles();
@@ -30,6 +31,9 @@ async function initialize() {
     hydrate(app, document.getElementById("root"));
     setStylesTarget(styleDiv);
     forceRenderStyles();
+
+    // Allow further route changes to run the 'onEnter' func
+    store.dispatch(appACs.UpdateAllowRouteLoad.create({}))
 }
 
 initialize();

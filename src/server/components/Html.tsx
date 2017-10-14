@@ -2,20 +2,25 @@ import * as React from "react";
 import { SFC } from "react";
 import { getStyles } from "typestyle/lib";
 import { RootState, PRELOADED_STATE } from "common/redux";
+import { Helmet } from "react-helmet";
 
 interface HtmlProps {
+    appString: string;
     bundles: string[];
     state: RootState;
 }
 
-
 export const Html: SFC<HtmlProps> = (props) => {
+    const helmet = Helmet.renderStatic();
     return (
         <html>
             <head>
+                {helmet.title.toComponent()}
                 <style id="styles-target">
                     {getStyles()}
                 </style>
+                {helmet.link.toComponent()}
+                {helmet.meta.toComponent()}
                 <meta
                     httpEquiv="Content-Type"
                     content="text/html"
@@ -28,9 +33,7 @@ export const Html: SFC<HtmlProps> = (props) => {
                 />
             </head>
             <body>
-                <div id="root">
-                    {props.children}
-                </div>
+                <div id="root" dangerouslySetInnerHTML={{ __html: props.appString }} />
             </body>
             <script dangerouslySetInnerHTML={{ __html: `window.${PRELOADED_STATE}=${JSON.stringify(props.state)}` }} />
             {props.bundles.map(b => (

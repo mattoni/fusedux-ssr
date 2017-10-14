@@ -2,6 +2,7 @@ import * as React from "react";
 import { SFC } from "react";
 import { style } from "typestyle";
 import { Colors } from "common/styles";
+import { Helmet } from "react-helmet";
 
 interface CounterProps {
     count: number;
@@ -20,7 +21,7 @@ const Styles = {
             "& button": {
                 backgroundColor: `${Colors.mainRed}`,
                 border: "none",
-                color: `${Colors.text}`,
+                color: `${Colors.white}`,
                 padding: "2rem",
                 margin: "1rem",
                 cursor: "pointer",
@@ -40,6 +41,9 @@ const Styles = {
 
 export const Counter: SFC<CounterProps> = (props) => (
     <div className={Styles.wrapper}>
+        <Helmet>
+            <title>FuseDux Counter</title>
+        </Helmet>
         <div className={Styles.number}>
             {props.count}
         </div>

@@ -1,5 +1,5 @@
 import { effects } from "redux-saga";
-import { currencyActions, Currency, CurrencyAction } from "./actions";
+import { currencyACs, Currency, CurrencyAction } from "./actions";
 const { put, takeEvery, call } = effects;
 
 export interface FetchCurrencyResp {
@@ -9,14 +9,12 @@ export interface FetchCurrencyResp {
 }
 
 function* fetchCurrency(action: CurrencyAction) {
-    if (action.type !== currencyActions.FetchCurrency.type) {
+    if (action.type !== currencyACs.FetchCurrency.type) {
         return;
     }
 
     const resp: FetchCurrencyResp = yield call(() => fetchCurrencyFromApi(action.payload))
-    console.log(resp);
-
-    yield put(currencyActions.SetCurrency.create({
+    yield put(currencyACs.SetCurrency.create({
         value: resp.rates[action.payload],
         type: action.payload
     }));
@@ -30,7 +28,7 @@ async function fetchCurrencyFromApi(type: Currency, base: Currency = "USD") {
 
 export function* watchFetchCurrency() {
     yield takeEvery(
-        currencyActions.FetchCurrency.type,
+        currencyACs.FetchCurrency.type,
         fetchCurrency
     );
 }

@@ -1,4 +1,4 @@
-import { currencyActions, CurrencyAction, Currency } from "./actions";
+import { currencyACs, CurrencyAction, Currency } from "./actions";
 
 export type CurrencyState = Readonly<{
     type: Currency;
@@ -12,7 +12,7 @@ const initialState: CurrencyState = {
 
 export function currencyReducer(state = initialState, action: CurrencyAction): CurrencyState {
     switch (action.type) {
-        case currencyActions.SetCurrency.type:
+        case currencyACs.SetCurrency.type:
             return { ...state, ...action.payload }
         default:
             return state;

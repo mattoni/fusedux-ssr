@@ -1,15 +1,15 @@
 import { delay, effects } from "redux-saga";
-import { counterActions } from "./actions";
+import { counterACs } from "./actions";
 const { put, takeEvery, } = effects;
 
 function* increaseAsync() {
     yield delay(1000);
-    yield put(counterActions.IncreaseCounter.create(1));
+    yield put(counterACs.IncreaseCounter.create(1));
 }
 
 export function* watchIncreaseAsync() {
     yield takeEvery(
-        counterActions.IncreaseCounterAsync.type,
+        counterACs.IncreaseCounterAsync.type,
         increaseAsync
     );
 }

@@ -7,9 +7,9 @@ interface SetCurrencyPayload {
     value: number;
 }
 
-export const currencyActions = {
+export const currencyACs = {
     FetchCurrency: new ActionCreator<"FETCH_CURRENCY", Currency>("FETCH_CURRENCY"),
     SetCurrency: new ActionCreator<"SET_CURRENCY", SetCurrencyPayload>("SET_CURRENCY"),
 };
 
-export type CurrencyAction = typeof currencyActions[keyof typeof currencyActions];
+export type CurrencyAction = typeof currencyACs[keyof typeof currencyACs];

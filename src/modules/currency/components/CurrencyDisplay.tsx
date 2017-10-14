@@ -3,6 +3,7 @@ import { SFC } from "react";
 import { style } from "typestyle";
 import { Colors } from "common/styles";
 import { Currency } from "modules/currency/redux";
+import { Helmet } from "react-helmet";
 
 interface CurrencyDisplayProps {
     base: Currency;
@@ -43,6 +44,9 @@ const Styles = {
 
 export const CurrencyDisplay: SFC<CurrencyDisplayProps> = (props) => (
     <div className={Styles.wrapper}>
+        <Helmet>
+            <title>FuseDux Currency</title>
+        </Helmet>
         <div className={Styles.number}>
             $1 USD = <span className={Styles.value}>{format(props.rate, props.target)}</span>
         </div>
