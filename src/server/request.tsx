@@ -1,5 +1,5 @@
 import * as Hapi from "hapi";
-import { StaticRouter, matchPath } from 'react-router'
+import { StaticRouter, matchPath } from "react-router";
 import * as React from "react";
 import { renderToString } from "react-dom/server";
 import { AppView } from "modules/app/views";
@@ -13,9 +13,12 @@ interface StaticContext {
     url?: string;
 }
 
-export const handleAppRequest = (req: Hapi.Request, reply: Hapi.ReplyNoContinue) => {
+export const handleAppRequest = (
+    req: Hapi.Request,
+    reply: Hapi.ReplyNoContinue,
+) => {
     const context: StaticContext = {};
-    const store = initStore()
+    const store = initStore();
 
     if (context.url) {
         reply.redirect(context.url);
@@ -27,33 +30,30 @@ export const handleAppRequest = (req: Hapi.Request, reply: Hapi.ReplyNoContinue)
         await execRoutes(req.path, store);
         store.dispatch(END);
 
-        await Promise.all([
-            runningSagas,
-        ]);
+        await Promise.all([runningSagas]);
 
         const app = renderToString(
             <Provider store={store}>
-                <StaticRouter
-                    location={req.path}
-                    context={context}>
+                <StaticRouter location={req.path} context={context}>
                     <AppView store={store} />
                 </StaticRouter>
-            </Provider>
+            </Provider>,
         );
 
-        reply(`
+        return `
             <!doctype html>
                 ${renderToString(
-                <Html
-                    appString={app}
-                    state={store.getState()}
-                    bundles={["/js/vendor.js", "/js/client.js"]} />)
-            }
-        `);
-    }
+                    <Html
+                        appString={app}
+                        state={store.getState()}
+                        bundles={["/js/vendor.js", "/js/client.js"]}
+                    />,
+                )}
+        `;
+    };
 
-    respond();
-}
+    return respond();
+};
 
 async function execRoutes(path: string, store: Store<RootState>) {
     let promise;

@@ -1,15 +1,43 @@
-import { ActionCreator } from "react-redux-typescript";
+export const FETCH_CURRENCY = "FETCH_CURRENCY";
+export const SET_CURRENCY = "SET_CURRENCY";
 
-export type Currency = "JPY" | "USD";
+export type CurrencyType = "JPY" | "USD";
 
-interface SetCurrencyPayload {
-    type: Currency;
-    value: number;
+export interface Actions {
+    FETCH_CURRENCY: {
+        type: typeof FETCH_CURRENCY;
+        payload: CurrencyType;
+    };
+    SET_CURRENCY: {
+        type: typeof SET_CURRENCY;
+        payload: {
+            type: CurrencyType;
+            value: number;
+        };
+    };
 }
 
-export const currencyACs = {
-    FetchCurrency: new ActionCreator<"FETCH_CURRENCY", Currency>("FETCH_CURRENCY"),
-    SetCurrency: new ActionCreator<"SET_CURRENCY", SetCurrencyPayload>("SET_CURRENCY"),
-};
+interface Payloads {
+    SET_CURRENCY: {
+        type: CurrencyType;
+        value: number;
+    };
+}
 
-export type CurrencyAction = typeof currencyACs[keyof typeof currencyACs];
+export type CurrencyAction = Actions[keyof Actions];
+
+export function fetchCurrency(c: CurrencyType): Actions[typeof FETCH_CURRENCY] {
+    return {
+        type: FETCH_CURRENCY,
+        payload: c,
+    };
+}
+
+export function setCurrency(
+    p: Payloads[typeof SET_CURRENCY],
+): Actions[typeof SET_CURRENCY] {
+    return {
+        type: SET_CURRENCY,
+        payload: p,
+    };
+}

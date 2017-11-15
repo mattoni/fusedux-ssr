@@ -1,4 +1,4 @@
-import { appACs, AppAction } from "./actions";
+import { UPDATE_ALLOW_ROUTE_LOAD, Actions } from "./actions";
 
 export type AppState = Readonly<{
     /**
@@ -6,16 +6,19 @@ export type AppState = Readonly<{
      * since the server just rendered it.
      */
     allowRouteLoad: boolean;
-}>
+}>;
 
 const initialState: AppState = {
     allowRouteLoad: false,
-}
+};
 
-export function appReducer(state = initialState, action: AppAction) {
+export function appReducer(
+    state = initialState,
+    action: Actions[keyof Actions],
+) {
     switch (action.type) {
-        case appACs.UpdateAllowRouteLoad.type:
-            return { ...state, allowRouteLoad: true }
+        case UPDATE_ALLOW_ROUTE_LOAD:
+            return { ...state, allowRouteLoad: true };
         default:
             return state;
     }

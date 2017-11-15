@@ -1,0 +1,6 @@
+{
+  "parser": "typescript",
+  "tabWidth": 4,
+  "trailingComma": "all",
+  "jsxBracketSameLine": true
+}

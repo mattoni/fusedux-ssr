@@ -7,7 +7,7 @@ import { ConnectedRouter } from "react-router-redux";
 import { history } from "common/router";
 import { initPageStyles } from "common/styles";
 import { setStylesTarget, forceRenderStyles } from "typestyle";
-import { appACs } from "modules/app/redux";
+import { updateAllowRouteLoad } from "modules/app/redux";
 
 async function initialize() {
     initPageStyles();
@@ -23,7 +23,7 @@ async function initialize() {
         </Provider>
     );
 
-    const styleDiv = document.getElementById('styles-target');
+    const styleDiv = document.getElementById("styles-target");
     if (!styleDiv) {
         throw new Error("Unable to render styles: missing target");
     }
@@ -33,7 +33,7 @@ async function initialize() {
     forceRenderStyles();
 
     // Allow further route changes to run the 'onEnter' func
-    store.dispatch(appACs.UpdateAllowRouteLoad.create({}))
+    store.dispatch(updateAllowRouteLoad());
 }
 
 initialize();

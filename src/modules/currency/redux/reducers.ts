@@ -1,19 +1,22 @@
-import { currencyACs, CurrencyAction, Currency } from "./actions";
+import { CurrencyAction, SET_CURRENCY, CurrencyType } from "./actions";
 
 export type CurrencyState = Readonly<{
-    type: Currency;
+    type: CurrencyType;
     value: number;
-}>
+}>;
 
 const initialState: CurrencyState = {
     type: "JPY",
-    value: 0
-}
+    value: 0,
+};
 
-export function currencyReducer(state = initialState, action: CurrencyAction): CurrencyState {
+export function currencyReducer(
+    state = initialState,
+    action: CurrencyAction,
+): CurrencyState {
     switch (action.type) {
-        case currencyACs.SetCurrency.type:
-            return { ...state, ...action.payload }
+        case SET_CURRENCY:
+            return { ...state, ...action.payload };
         default:
             return state;
     }
